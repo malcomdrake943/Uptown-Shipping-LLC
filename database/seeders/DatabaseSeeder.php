@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             SizeFeeRuleSeeder::class,
             AdminUserSeeder::class,
             PlatformSeeder::class,
+            DeliveryOptionSeeder::class,
         ]);
     }
 }
