@@ -68,7 +68,7 @@
 
     <!-- Core Features Grid -->
     <div class="glass-light rounded-3xl p-8 md:p-10 mb-12 shadow-xl">
-        <h3 class="text-xl font-display font-bold text-gray-900 mb-8 text-center">Why Customers Trust Jubilee Direct</h3>
+        <h3 class="text-xl font-display font-bold text-gray-900 mb-8 text-center">Why Customers Trust UpTown Services</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="text-center p-4">
                 <div class="w-12 h-12 mx-auto rounded-2xl bg-brand-50 border border-brand-200 flex items-center justify-center text-brand-600 font-bold text-xl mb-3">1</div>
@@ -133,7 +133,7 @@
     <!-- CTA Section -->
     <div class="glass p-8 md:p-10 rounded-3xl border border-white/20 text-center">
         <h3 class="text-2xl font-display font-bold text-white mb-2">Ready to Shop Overseas?</h3>
-        <p class="text-white/60 text-sm mb-6 max-w-lg mx-auto">Paste any item link and let Jubilee Direct handle purchasing, customs, and delivery for you.</p>
+        <p class="text-white/60 text-sm mb-6 max-w-lg mx-auto">Paste any item link and let UpTown Services handle purchasing, customs, and delivery for you.</p>
         <a href="{{ route('order.index') }}" class="inline-block btn-primary text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg transition-transform hover:scale-105">
             Start Your Order Now →
         </a>

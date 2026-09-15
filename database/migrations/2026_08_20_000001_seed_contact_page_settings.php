@@ -14,7 +14,7 @@ return new class extends Migration
             [
                 'key'        => 'contact_title',
                 'label'      => 'Contact Us Page - Main Title',
-                'value'      => 'Get in Touch with Jubilee Direct',
+                'value'      => 'Get in Touch with UpTown Services',
                 'group'      => 'contact_page',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -30,7 +30,7 @@ return new class extends Migration
             [
                 'key'        => 'contact_email',
                 'label'      => 'Contact Us Page - Support Email',
-                'value'      => 'support@jubileedirect.com',
+                'value'      => 'support@uptownservices.net',
                 'group'      => 'contact_page',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -38,7 +38,7 @@ return new class extends Migration
             [
                 'key'        => 'contact_phone',
                 'label'      => 'Contact Us Page - Support Phone',
-                'value'      => '+1 (800) 555-0199',
+                'value'      => '+1 (555) 123-4567',
                 'group'      => 'contact_page',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -46,7 +46,7 @@ return new class extends Migration
             [
                 'key'        => 'contact_whatsapp',
                 'label'      => 'Contact Us Page - WhatsApp Number',
-                'value'      => '+1 (800) 555-0199',
+                'value'      => '+1 (555) 123-4567',
                 'group'      => 'contact_page',
                 'created_at' => now(),
                 'updated_at' => now(),

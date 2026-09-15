@@ -26,7 +26,7 @@ return new class extends Migration
             [
                 'key'        => 'mobile_money_phone',
                 'label'      => 'Mobile Money Support Phone Number',
-                'value'      => '+1 (800) 555-0199',
+                'value'      => '+1 (555) 123-4567',
                 'group'      => 'payment',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -34,7 +34,7 @@ return new class extends Migration
             [
                 'key'        => 'support_phone',
                 'label'      => 'General Support Phone Number',
-                'value'      => '+1 (800) 555-0199',
+                'value'      => '+1 (555) 123-4567',
                 'group'      => 'general',
                 'created_at' => now(),
                 'updated_at' => now(),

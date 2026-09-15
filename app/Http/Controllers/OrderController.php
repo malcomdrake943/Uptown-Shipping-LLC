@@ -143,7 +143,7 @@ class OrderController extends Controller
                     'enabled' => true,
                     'allow_redirects' => 'never',
                 ],
-                'description'               => "Jubilee Direct order purchase",
+                'description'               => "UpTown Services order purchase",
                 'receipt_email'             => $data['customer_email'],
                 'metadata'                  => [
                     'customer_name'  => $data['customer_name'],
@@ -192,7 +192,7 @@ class OrderController extends Controller
         $platforms    = Platform::where('is_active', true)->get();
         $supportPhone = Setting::get('mobile_money_phone')
             ?? Setting::get('support_phone')
-            ?? config('app.support_phone', '+1 (800) 555-0199');
+            ?? config('app.support_phone', '+1 (555) 123-4567');
         $deliveryOptions = \Illuminate\Support\Facades\Schema::hasTable('delivery_options') ? \App\Models\DeliveryOption::where('is_active', true)->get() : collect();
 
         return view('order.index', compact('sizeFeeRules', 'feeRules', 'platforms', 'supportPhone', 'deliveryOptions'));
@@ -385,7 +385,7 @@ class OrderController extends Controller
                     'unit_amount'  => $totalCents,
                     'product_data' => [
                         'name'        => ($data['product_name'] ?? 'Product Purchase') . " (×{$data['quantity']})",
-                        'description' => "Jubilee Direct forwarding service – Order includes product price + service fees",
+                        'description' => "UpTown Services forwarding service – Order includes product price + service fees",
                         'images'      => array_filter([$data['product_image_url'] ?? null]),
                     ],
                 ],

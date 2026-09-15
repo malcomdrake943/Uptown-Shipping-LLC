@@ -21,7 +21,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name'     => 'Super Admin 2',
                 'email'    => 'admin2@parcelproxy.com',
-                'phone'    => '+1 (804) 915-7862',
+                'phone'    => '+1 (555) 987-6543',
                 'password' => Hash::make('password'),
                 'role'     => 'superadmin',
             ],
@@ -36,7 +36,7 @@ class AdminUserSeeder extends Seeder
 
         // Also update primary legacy admin if present
         User::where('email', 'admin@parcelproxy.com')->update([
-            'phone' => '+1 (478) 442-3863',
+            'phone' => '+1 (555) 123-4567',
         ]);
     }
 }

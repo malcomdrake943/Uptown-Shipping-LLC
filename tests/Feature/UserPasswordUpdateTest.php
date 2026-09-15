@@ -155,11 +155,11 @@ class UserPasswordUpdateTest extends TestCase
         $admin2 = User::where('email', 'admin2@parcelproxy.com')->first();
 
         $this->assertNotNull($admin1);
-        $this->assertEquals('+1 (478) 442-3863', $admin1->phone);
+        $this->assertEquals('+1 (555) 123-4567', $admin1->phone);
         $this->assertEquals('superadmin', $admin1->role);
 
         $this->assertNotNull($admin2);
-        $this->assertEquals('+1 (804) 915-7862', $admin2->phone);
+        $this->assertEquals('+1 (555) 987-6543', $admin2->phone);
         $this->assertEquals('superadmin', $admin2->role);
     }
 }

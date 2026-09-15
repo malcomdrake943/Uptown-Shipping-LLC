@@ -35,7 +35,7 @@ class ManageHomeAboutSection extends Page implements HasForms
             'home_about_visible'  => Setting::get('home_about_visible', 'true'),
             'home_about_title'    => Setting::get('home_about_title', 'Shopping Internationally Made Effortless'),
             'home_about_subtitle' => Setting::get('home_about_subtitle', 'We buy products directly from top global stores and deliver them straight to your doorstep.'),
-            'home_about_content'  => Setting::get('home_about_content', 'Jubilee Direct bridges the gap between international retailers and global shoppers. Simply provide a link from Amazon, eBay, or any major online store, and our procurement team will securely handle payment, customs clearance, and fast door-to-door delivery with total fee transparency.'),
+            'home_about_content'  => Setting::get('home_about_content', 'UpTown Services bridges the gap between international retailers and global shoppers. Simply provide a link from Amazon, eBay, or any major online store, and our procurement team will securely handle payment, customs clearance, and fast door-to-door delivery with total fee transparency.'),
         ]);
     }
 

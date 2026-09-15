@@ -123,6 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'support_phone' => env('SUPPORT_PHONE', '804-239-5736'),
+    'support_phone' => env('SUPPORT_PHONE', '555-123-4567'),
 
 ];

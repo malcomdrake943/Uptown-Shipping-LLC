@@ -30,7 +30,7 @@ return new class extends Migration
             [
                 'key'        => 'home_about_content',
                 'label'      => 'Main Page About Section - Description',
-                'value'      => 'Jubilee Direct bridges the gap between international retailers and global shoppers. Simply provide a link from Amazon, eBay, or any major online store, and our procurement team will securely handle payment, customs clearance, and fast door-to-door delivery with total fee transparency.',
+                'value'      => 'UpTown Services bridges the gap between international retailers and global shoppers. Simply provide a link from Amazon, eBay, or any major online store, and our procurement team will securely handle payment, customs clearance, and fast door-to-door delivery with total fee transparency.',
                 'group'      => 'home_page',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -46,7 +46,7 @@ return new class extends Migration
             [
                 'key'        => 'about_title',
                 'label'      => 'About Us Page - Main Title',
-                'value'      => 'About Jubilee Direct',
+                'value'      => 'About UpTown Services',
                 'group'      => 'about_page',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -62,7 +62,7 @@ return new class extends Migration
             [
                 'key'        => 'about_content',
                 'label'      => 'About Us Page - Story & Overview',
-                'value'      => "Jubilee Direct was founded with a clear vision: to eliminate cross-border shopping barriers. International e-commerce is often complicated by payment restrictions, complex shipping policies, and hidden duties.\n\nWe simplify everything into a single, intuitive platform. Customers submit product links from leading global marketplaces, and Jubilee Direct manages the entire lifecycle—from verified procurement and secure cross-border payment processing to package consolidation and reliable final-mile delivery.",
+                'value'      => "UpTown Services was founded with a clear vision: to eliminate cross-border shopping barriers. International e-commerce is often complicated by payment restrictions, complex shipping policies, and hidden duties.\n\nWe simplify everything into a single, intuitive platform. Customers submit product links from leading global marketplaces, and UpTown Services manages the entire lifecycle—from verified procurement and secure cross-border payment processing to package consolidation and reliable final-mile delivery.",
                 'group'      => 'about_page',
                 'created_at' => now(),
                 'updated_at' => now(),

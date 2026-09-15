@@ -161,6 +161,8 @@
                 <span class="text-white font-display font-bold text-xl tracking-tight">Uptown<span class="gradient-text"> Shipping</span></span>
             </a>
             <div class="flex items-center gap-4">
+                <a href="{{ route('about') }}" class="text-white/70 hover:text-white text-sm font-medium transition-colors">About Us</a>
+                <a href="{{ route('contact') }}" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Contact Us</a>
                 <a href="{{ route('order.index') }}" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Order</a>
                 <a href="#" onclick="document.getElementById('resend-modal').classList.remove('hidden')" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Track Order</a>
             </div>
@@ -222,10 +224,10 @@
             <div class="space-y-2">
                 <h4 class="text-white font-semibold text-xs uppercase tracking-wider">Contact Us</h4>
                 <p class="flex items-center gap-2 text-xs">
-                    <span>📞</span> <a href="tel:8042395736" class="hover:text-white transition-colors">804-239-5736</a>
+                    <span>📞</span> <a href="tel:+15551234567" class="hover:text-white transition-colors">555-123-4567</a>
                 </p>
                 <p class="flex items-center gap-2 text-xs">
-                    <span>✉️</span> <a href="mailto:deultimate143@yahoo.com" class="hover:text-white transition-colors">deultimate143@yahoo.com</a>
+                    <span>✉️</span> <a href="mailto:support@uptownservices.net" class="hover:text-white transition-colors">support@uptownservices.net</a>
                 </p>
                 <p class="flex items-start gap-2 text-xs">
                     <span>📍</span> <span class="leading-tight">6341 Dawnfield Lane,<br>Henrico VA 23231</span>

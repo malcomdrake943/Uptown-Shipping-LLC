@@ -10,7 +10,7 @@
         </div>
         @php
             $isMomo = request('payment_method') === 'momo' || str_starts_with($order?->stripe_payment_intent_id ?? '', 'momo_');
-            $supportPhone = config('app.support_phone', '804-239-5736');
+            $supportPhone = config('app.support_phone', '555-123-4567');
         @endphp
         <h1 class="text-3xl font-display font-bold text-gray-900 mb-3">Order Confirmed! 🎉</h1>
         @if($order)

@@ -11,14 +11,14 @@ class SettingSeeder extends Seeder
     {
         Setting::set(
             'mobile_money_phone',
-            '+1 (478) 442-3863',
+            '+1 (555) 123-4567',
             'Mobile Money Support Phone Number',
             'payment'
         );
 
         Setting::set(
             'support_phone',
-            '+1 (804) 915-7862',
+            '+1 (555) 987-6543',
             'General Support Phone Number',
             'general'
         );

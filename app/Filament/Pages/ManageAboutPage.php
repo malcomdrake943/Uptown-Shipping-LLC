@@ -31,9 +31,9 @@ class ManageAboutPage extends Page implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'about_title'    => Setting::get('about_title', 'About Jubilee Direct'),
+            'about_title'    => Setting::get('about_title', 'About UpTown Services'),
             'about_subtitle' => Setting::get('about_subtitle', 'Connecting shoppers worldwide with global e-commerce stores.'),
-            'about_content'  => Setting::get('about_content', "Jubilee Direct was founded with a clear vision: to eliminate cross-border shopping barriers.\n\nWe simplify everything into a single, intuitive platform."),
+            'about_content'  => Setting::get('about_content', "UpTown Services was founded with a clear vision: to eliminate cross-border shopping barriers.\n\nWe simplify everything into a single, intuitive platform."),
             'about_mission'  => Setting::get('about_mission', 'To make global products accessible to anyone, anywhere by offering transparent pricing, secure procurement, and seamless doorstep delivery.'),
             'about_vision'   => Setting::get('about_vision', 'To become the premier global purchase-forwarding service trusted by millions for cross-border e-commerce solutions.'),
         ]);

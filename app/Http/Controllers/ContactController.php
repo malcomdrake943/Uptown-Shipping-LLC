@@ -15,11 +15,11 @@ class ContactController extends Controller
      */
     public function index(): View
     {
-        $contactTitle = Setting::get('contact_title', 'Get in Touch with Jubilee Direct');
+        $contactTitle = Setting::get('contact_title', 'Get in Touch with UpTown Services');
         $contactSubtitle = Setting::get('contact_subtitle', 'Have questions about an order, shipping options, or custom quotes? Our team is here to assist you.');
-        $contactEmail = Setting::get('contact_email', 'support@jubileedirect.com');
-        $contactPhone = Setting::get('contact_phone', '+1 (800) 555-0199');
-        $contactWhatsapp = Setting::get('contact_whatsapp', '+1 (800) 555-0199');
+        $contactEmail = Setting::get('contact_email', 'support@uptownservices.net');
+        $contactPhone = Setting::get('contact_phone', '+1 (555) 123-4567');
+        $contactWhatsapp = Setting::get('contact_whatsapp', '+1 (555) 123-4567');
         $contactAddress = Setting::get('contact_address', '123 Commerce Boulevard, Suite 400, New York, NY 10001, United States');
         $contactWorkingHours = Setting::get('contact_working_hours', "Monday – Friday: 9:00 AM – 6:00 PM EST\nSaturday: 10:00 AM – 4:00 PM EST\nSunday: Closed");
         $contactFormIntro = Setting::get('contact_form_intro', 'Send us a message and our procurement specialists will get back to you within 24 hours.');

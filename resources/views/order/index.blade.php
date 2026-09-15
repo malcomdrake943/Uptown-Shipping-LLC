@@ -58,10 +58,10 @@
                     <!-- Contact items from flyer -->
                     <div class="pt-4 border-t border-white/5 space-y-2.5 text-xs text-white/50">
                         <div class="flex items-center gap-2">
-                            <span>📞</span> <a href="tel:8042395736" class="hover:text-white transition-colors">804-239-5736</a>
+                            <span>📞</span> <a href="tel:8042395736" class="hover:text-white transition-colors">555-123-4567</a>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span>✉️</span> <a href="mailto:deultimate143@yahoo.com" class="hover:text-white transition-colors">deultimate143@yahoo.com</a>
+                            <span>✉️</span> <a href="mailto:support@uptownservices.net" class="hover:text-white transition-colors">support@uptownservices.net</a>
                         </div>
                         <div class="flex items-start gap-2">
                             <span>📍</span> <span class="leading-normal">6341 Dawnfield Lane, Henrico VA 23231</span>

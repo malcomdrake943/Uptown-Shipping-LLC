@@ -32,11 +32,11 @@ class ManageContactPage extends Page implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'contact_title'         => Setting::get('contact_title', 'Get in Touch with Jubilee Direct'),
+            'contact_title'         => Setting::get('contact_title', 'Get in Touch with UpTown Services'),
             'contact_subtitle'      => Setting::get('contact_subtitle', 'Have questions about an order, shipping options, or custom quotes? Our team is here to assist you.'),
-            'contact_email'         => Setting::get('contact_email', 'support@jubileedirect.com'),
-            'contact_phone'         => Setting::get('contact_phone', '+1 (800) 555-0199'),
-            'contact_whatsapp'      => Setting::get('contact_whatsapp', '+1 (800) 555-0199'),
+            'contact_email'         => Setting::get('contact_email', 'support@uptownservices.net'),
+            'contact_phone'         => Setting::get('contact_phone', '+1 (555) 123-4567'),
+            'contact_whatsapp'      => Setting::get('contact_whatsapp', '+1 (555) 123-4567'),
             'contact_address'       => Setting::get('contact_address', '123 Commerce Boulevard, Suite 400, New York, NY 10001, United States'),
             'contact_working_hours' => Setting::get('contact_working_hours', "Monday – Friday: 9:00 AM – 6:00 PM EST\nSaturday: 10:00 AM – 4:00 PM EST\nSunday: Closed"),
             'contact_form_intro'    => Setting::get('contact_form_intro', 'Send us a message and our procurement specialists will get back to you within 24 hours.'),
