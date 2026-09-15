@@ -47,6 +47,18 @@ class OrderResource extends Resource
                 Forms\Components\Select::make('size_tier')
                     ->options(['small' => 'Small', 'medium' => 'Medium', 'large' => 'Large', 'oversized' => 'Oversized'])
                     ->disabled(),
+                Forms\Components\Select::make('shipping_method')
+                    ->label('Shipping Method')
+                    ->options([
+                        'express_air'  => '⚡ Express Air (3–7 Days)',
+                        'standard_air' => '✈️ Standard Air (7–14 Days)',
+                        'sea_freight'  => '🚢 Sea Freight (4–8 Weeks)',
+                    ])
+                    ->disabled(),
+                Forms\Components\TextInput::make('product_weight')
+                    ->label('Package Weight (kg/lbs)')
+                    ->suffix('kg')
+                    ->disabled(),
             ])->columns(2),
 
             Forms\Components\Section::make('Pricing')->schema([
@@ -116,8 +128,26 @@ class OrderResource extends Resource
                 Tables\Columns\BadgeColumn::make('source_platform')
                     ->colors(['primary' => 'amazon', 'warning' => 'ebay', 'gray' => 'other']),
                 Tables\Columns\BadgeColumn::make('size_tier'),
+                Tables\Columns\TextColumn::make('shipping_method')
+                    ->label('Shipping Speed')
+                    ->formatStateUsing(fn ($state) => match($state) {
+                        'express_air'  => '⚡ Express Air (3-7d)',
+                        'sea_freight'  => '🚢 Sea Freight (4-8w)',
+                        default        => '✈️ Standard Air (7-14d)',
+                    })
+                    ->badge()
+                    ->color(fn ($state) => match($state) {
+                        'express_air' => 'warning',
+                        'sea_freight' => 'info',
+                        default       => 'gray',
+                    })
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('product_weight')
+                    ->label('Weight')
+                    ->formatStateUsing(fn ($state) => $state ? "{$state} kg" : '-')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('total_charged')
-                    ->money('usd')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '-')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

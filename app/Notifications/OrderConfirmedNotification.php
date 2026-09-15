@@ -37,6 +37,6 @@ class OrderConfirmedNotification extends Notification implements ShouldQueue
             ->line("**Total Charged:** $" . number_format($this->order->total_charged, 2))
             ->action('Track Your Order', $trackingUrl)
             ->line("This tracking link is valid for 90 days. Keep it safe!")
-            ->salutation("Thank you for using Jubilee Nexus Group!");
+            ->salutation("Thank you for using Jubilee Direct!");
     }
 }

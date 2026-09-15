@@ -29,6 +29,6 @@ class OrderNeedsManualQuoteNotification extends Notification implements ShouldQu
             ->line("**Product:** " . ($this->order->product_name ?? $this->order->product_url))
             ->line("We'll review your request and send you a payment link within 1–2 business days.")
             ->line("You don't need to do anything right now.")
-            ->salutation("Thank you for your patience – Jubilee Nexus Group Team");
+            ->salutation("Thank you for your patience – Jubilee Direct Team");
     }
 }

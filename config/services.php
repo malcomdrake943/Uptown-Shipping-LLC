@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'scraperapi' => [
+        'key' => env('SCRAPER_API_KEY', "25e1bef6a0b0cf1dd685068748ce"),
+    ],
+
+    'rainforest' => [
+        'key' => env('RAINFOREST_API_KEY'),
+    ],
+
+    'fcm' => [
+        'server_key' => env('FCM_SERVER_KEY'),
+    ],
+
 ];

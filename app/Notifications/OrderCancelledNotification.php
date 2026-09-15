@@ -35,6 +35,6 @@ class OrderCancelledNotification extends Notification implements ShouldQueue
 
         $mail->line("If a refund is applicable, it will be processed to your original payment method within 5–10 business days.");
 
-        return $mail->salutation("We apologize for any inconvenience – Jubilee Nexus Group Team");
+        return $mail->salutation("We apologize for any inconvenience – Jubilee Direct Team");
     }
 }

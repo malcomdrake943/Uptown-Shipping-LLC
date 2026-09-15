@@ -59,13 +59,14 @@ class OrderController extends Controller
     {
         $data = $request->validate([
             'platform_id'            => 'required|exists:platforms,id',
-            'payment_method_type'    => 'nullable|string|in:card,momo',
-            'payment_method_id'      => 'nullable|string',
+            'payment_method_id'      => 'required|string',
             'product_url'            => 'required|url|max:2048',
             'product_name'           => 'nullable|string|max:500',
             'product_image_url'      => 'nullable|url|max:2048',
             'estimated_product_price'=> 'required|numeric|min:0.01',
             'size_tier'              => 'required|in:small,medium,large,oversized',
+            'shipping_method'        => 'nullable|string|in:express_air,standard_air,sea_freight',
+            'product_weight'         => 'nullable|numeric|min:0.01|max:9999',
             'quantity'               => 'required|integer|min:1|max:100',
             'customer_name'          => 'required|string|max:200',
             'customer_email'         => 'required|email|max:200',
@@ -101,36 +102,8 @@ class OrderController extends Controller
             ]);
         }
 
-        // Mobile Money Payment Option
-        if (($data['payment_method_type'] ?? 'card') === 'momo') {
-            $momoIntentId = 'momo_' . Str::random(16);
-
-            $order = $this->createOrder($data, $feeBreakdown, 'pending', null, $momoIntentId);
-
-            Payment::create([
-                'order_id'                 => $order->id,
-                'stripe_payment_intent_id' => $momoIntentId,
-                'type'                     => 'initial',
-                'amount'                   => $feeBreakdown['total_charged'],
-                'currency'                 => 'usd',
-                'status'                   => 'pending_momo',
-            ]);
-
-            try {
-                $order->notify(new OrderConfirmedNotification($order));
-            } catch (\Throwable $e) {
-                Log::warning("Notification failed during MoMo order: " . $e->getMessage());
-            }
-
-            return response()->json([
-                'success'  => true,
-                'redirect' => route('order.success') . '?session_id=' . $momoIntentId . '&payment_method=momo',
-            ]);
-        }
-
         $stripeSecret = config('cashier.secret');
-        $paymentMethodId = $data['payment_method_id'] ?? 'pm_mock_123456';
-        $isMock = empty($stripeSecret) || str_contains($stripeSecret, 'your_secret_key_here') || str_starts_with($paymentMethodId, 'pm_mock_');
+        $isMock = empty($stripeSecret) || str_contains($stripeSecret, 'your_secret_key_here') || str_starts_with($data['payment_method_id'], 'pm_mock_');
 
         if ($isMock) {
             $mockIntentId = 'pi_mock_' . \Illuminate\Support\Str::random(16);
@@ -164,13 +137,13 @@ class OrderController extends Controller
             $intent = \Stripe\PaymentIntent::create([
                 'amount'                    => $totalCents,
                 'currency'                  => 'usd',
-                'payment_method'            => $paymentMethodId,
+                'payment_method'            => $data['payment_method_id'],
                 'confirm'                   => true,
                 'automatic_payment_methods' => [
                     'enabled' => true,
                     'allow_redirects' => 'never',
                 ],
-                'description'               => "Jubilee Nexus Group order purchase",
+                'description'               => "Jubilee Direct order purchase",
                 'receipt_email'             => $data['customer_email'],
                 'metadata'                  => [
                     'customer_name'  => $data['customer_name'],
@@ -217,9 +190,89 @@ class OrderController extends Controller
         $sizeFeeRules = FeeCalculatorService::sizeFeeRulesForJs();
         $feeRules     = FeeCalculatorService::feeRulesForJs();
         $platforms    = Platform::where('is_active', true)->get();
-        $supportPhone = Setting::get('support_phone', config('app.support_phone', '804-239-5736'));
+        $supportPhone = Setting::get('mobile_money_phone')
+            ?? Setting::get('support_phone')
+            ?? config('app.support_phone', '+1 (800) 555-0199');
+        $deliveryOptions$deliveryOptions = \Illuminate\Support\Facades\Schema::hasTable('delivery_options') ? \App\Models\DeliveryOption::where('is_active', true)->get() : collect();
 
-        return view('order.index', compact('sizeFeeRules', 'feeRules', 'platforms', 'supportPhone'));
+        return view('order.index', compact('sizeFeeRules', 'feeRules', 'platforms', 'supportPhone', 'deliveryOptions'));
+    }
+
+    // ── Mobile Money Payment Processing ───────────────────────────────────────
+
+    public function processMobileMoney(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'platform_id'            => 'required|exists:platforms,id',
+            'product_url'            => 'required|url|max:2048',
+            'product_name'           => 'nullable|string|max:500',
+            'product_image_url'      => 'nullable|url|max:2048',
+            'estimated_product_price'=> 'required|numeric|min:0.01',
+            'size_tier'              => 'required|in:small,medium,large,oversized',
+            'shipping_method'        => 'nullable|string|in:express_air,standard_air,sea_freight',
+            'product_weight'         => 'nullable|numeric|min:0.01|max:9999',
+            'quantity'               => 'required|integer|min:1|max:100',
+            'customer_name'          => 'required|string|max:200',
+            'customer_email'         => 'required|email|max:200',
+            'customer_phone'         => 'required|string|max:50',
+            'shipping_address'       => 'required|array',
+            'shipping_address.line1' => 'required|string|max:255',
+            'shipping_address.line2' => 'nullable|string|max:255',
+            'shipping_address.city'  => 'required|string|max:100',
+            'shipping_address.state' => 'nullable|string|max:100',
+            'shipping_address.postal_code' => 'required|string|max:20',
+            'shipping_address.country'     => 'required|string|max:100',
+            'customer_notes'         => 'nullable|string|max:1000',
+        ]);
+
+        try {
+            $feeBreakdown = $this->feeCalculator->calculate(
+                (float) $data['estimated_product_price'],
+                $data['size_tier'],
+                (int) $data['quantity']
+            );
+        } catch (\RuntimeException $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
+
+        if ($feeBreakdown['requires_manual_quote']) {
+            $order = $this->createOrder($data, $feeBreakdown, 'under_review');
+            $order->notify(new OrderNeedsManualQuoteNotification($order));
+
+            return response()->json([
+                'manual_quote' => true,
+                'order_number' => $order->order_number,
+                'redirect'     => route('order.manual-quote-confirmation'),
+            ]);
+        }
+
+        $momoReference = 'momo_' . Str::random(16);
+
+        $order = $this->createOrder($data, $feeBreakdown, 'pending', null, $momoReference);
+
+        Payment::create([
+            'order_id'                 => $order->id,
+            'stripe_payment_intent_id' => $momoReference,
+            'type'                     => 'initial',
+            'amount'                   => $feeBreakdown['total_charged'],
+            'currency'                 => 'usd',
+            'status'                   => 'pending',
+            'stripe_metadata'          => [
+                'payment_method' => 'mobile_money',
+                'note'           => 'Mobile Money payment pending customer support contact.',
+            ],
+        ]);
+
+        try {
+            $order->notify(new OrderConfirmedNotification($order));
+        } catch (\Throwable $e) {
+            Log::warning("Notification failed during Mobile Money order: " . $e->getMessage());
+        }
+
+        return response()->json([
+            'success'  => true,
+            'redirect' => route('order.success') . '?session_id=' . $momoReference,
+        ]);
     }
 
     // ── Step 1: Fetch product info (dispatch queued job) ────────────────────────
@@ -282,6 +335,8 @@ class OrderController extends Controller
             'product_image_url'      => 'nullable|url|max:2048',
             'estimated_product_price'=> 'required|numeric|min:0.01',
             'size_tier'              => 'required|in:small,medium,large,oversized',
+            'shipping_method'        => 'nullable|string|in:express_air,standard_air,sea_freight',
+            'product_weight'         => 'nullable|numeric|min:0.01|max:9999',
             'quantity'               => 'required|integer|min:1|max:100',
             'customer_name'          => 'required|string|max:200',
             'customer_email'         => 'required|email|max:200',
@@ -330,7 +385,7 @@ class OrderController extends Controller
                     'unit_amount'  => $totalCents,
                     'product_data' => [
                         'name'        => ($data['product_name'] ?? 'Product Purchase') . " (×{$data['quantity']})",
-                        'description' => "Jubilee Nexus Group forwarding service – Order includes product price + service fees",
+                        'description' => "Jubilee Direct forwarding service – Order includes product price + service fees",
                         'images'      => array_filter([$data['product_image_url'] ?? null]),
                     ],
                 ],
@@ -472,6 +527,8 @@ class OrderController extends Controller
             'source_platform'          => Order::detectPlatform($data['product_url']),
             'quantity'                 => $data['quantity'],
             'size_tier'                => $data['size_tier'],
+            'shipping_method'          => $data['shipping_method'] ?? 'standard_air',
+            'product_weight'           => isset($data['product_weight']) && $data['product_weight'] !== '' ? $data['product_weight'] : null,
             'estimated_product_price'  => $data['estimated_product_price'],
             'service_fee'              => $feeBreakdown['tier_fee'],
             'size_handling_fee'        => $feeBreakdown['size_fee'],

@@ -36,6 +36,6 @@ class OrderShippedNotification extends Notification implements ShouldQueue
             ->line("**Tracking Number:** " . ($this->order->tracking_number ?? 'See tracking page'))
             ->action('Track Your Shipment', $trackingUrl)
             ->line("Use the link above to view your order status and tracking information.")
-            ->salutation("Thank you – Jubilee Nexus Group Team");
+            ->salutation("Thank you – Jubilee Direct Team");
     }
 }

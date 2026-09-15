@@ -20,6 +20,8 @@ class Order extends Model
         'source_platform',
         'quantity',
         'size_tier',
+        'shipping_method',
+        'product_weight',
         'estimated_product_price',
         'final_product_price',
         'service_fee',
@@ -46,6 +48,7 @@ class Order extends Model
         'service_fee'               => 'decimal:2',
         'size_handling_fee'         => 'decimal:2',
         'total_charged'             => 'decimal:2',
+        'product_weight'            => 'decimal:2',
         'quantity'                  => 'integer',
     ];
 

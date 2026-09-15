@@ -292,6 +292,17 @@
                             </div>
                         </div>
 
+                        <!-- Preferred Shipping Method -->
+                        <div class="mb-4">
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Preferred Shipping Method <span class="text-red-500">*</span></label>
+                            <select x-model="shippingMethod" class="input-field w-full px-3 py-2.5 rounded-xl text-gray-800 text-xs" @change="recalculateFees()">
+                                <option value="">Select Shipping Method</option>
+                                @foreach($deliveryOptions as $option)
+                                    <option value="{{ $option->id }}">{{ $option->name }} ({{ $option->duration }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Live Fee Breakdown -->
                         <div x-show="sizeTier && estimatedPrice > 0" x-transition class="fee-card rounded-xl p-4 mb-4">
                             <!-- Oversized: manual quote notice -->
@@ -714,6 +725,7 @@
                 estimatedPrice: '',
                 quantity: 1,
                 sizeTier: '',
+                shippingMethod: '',
                 fetchingProduct: false,
                 productFetchResult: null,
                 fetchJobKey: null,
@@ -1012,7 +1024,7 @@
                     }, 1500);
                 },
 
-                // ── Fee Calculator ─────────────────────────────────────────────────────
+                // ── Fee Calculator ────────────────────────────────────────────────     
 
                 getFeePercent() {
                     if (!this.estimatedPrice || !this.feeRules.length) return 0;
@@ -1064,6 +1076,7 @@
                     if (!this.productUrl) return this.step1Error = 'Please enter a product URL.';
                     if (!this.estimatedPrice || this.estimatedPrice <= 0) return this.step1Error = 'Please enter the product price.';
                     if (!this.sizeTier) return this.step1Error = 'Please select a package size.';
+                    if (!this.shippingMethod) return this.step1Error = 'Please select a shipping method.';
                     if (!this.quantity || this.quantity < 1) return this.step1Error = 'Quantity must be at least 1.';
                     this.step = 3;
                 },
@@ -1102,6 +1115,7 @@
                         product_image_url: this.productImageUrl || null,
                         estimated_product_price: this.estimatedPrice,
                         size_tier: this.sizeTier,
+                        shipping_method: this.shippingMethod,
                         quantity: this.quantity,
                         customer_name: this.customerName,
                         customer_email: this.customerEmail,

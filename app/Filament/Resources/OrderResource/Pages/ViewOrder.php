@@ -40,11 +40,17 @@ class ViewOrder extends ViewRecord
             ])->columns(3),
 
             Components\Section::make('Pricing')->schema([
-                Components\TextEntry::make('estimated_product_price')->money('usd'),
-                Components\TextEntry::make('final_product_price')->money('usd'),
-                Components\TextEntry::make('service_fee')->money('usd'),
-                Components\TextEntry::make('size_handling_fee')->money('usd'),
-                Components\TextEntry::make('total_charged')->money('usd')->weight('bold'),
+                Components\TextEntry::make('estimated_product_price')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '-'),
+                Components\TextEntry::make('final_product_price')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '-'),
+                Components\TextEntry::make('service_fee')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '-'),
+                Components\TextEntry::make('size_handling_fee')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '-'),
+                Components\TextEntry::make('total_charged')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '-')
+                    ->weight('bold'),
                 Components\TextEntry::make('price_reconciliation_status')->badge(),
             ])->columns(3),
 

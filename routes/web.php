@@ -1,11 +1,19 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TrackingController;
 use Illuminate\Support\Facades\Route;
 
+// ── Public Pages ──────────────────────────────────────────────────────────────
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
 // ── Redirect root to order form ──────────────────────────────────────────────
 Route::get('/', fn () => redirect()->route('order.index'));
+
 
 // ── Public Order Flow ─────────────────────────────────────────────────────────
 Route::prefix('order')->name('order.')->group(function () {
@@ -25,6 +33,7 @@ Route::prefix('order')->name('order.')->group(function () {
     Route::post('/scan/initiate', [OrderController::class, 'initiateCardScan'])->name('scan.initiate');
     Route::get('/scan/status/{scanId}', [OrderController::class, 'getScanStatus'])->name('scan.status');
     Route::post('/charge', [OrderController::class, 'processPayment'])->name('charge');
+    Route::post('/mobile-money', [OrderController::class, 'processMobileMoney'])->name('mobile-money');
 
     // Stripe redirect pages
     Route::get('/success', [OrderController::class, 'success'])->name('success');

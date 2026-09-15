@@ -30,6 +30,6 @@ class RefundIssuedNotification extends Notification implements ShouldQueue
             ->line("Great news! We've issued a partial refund for your order **{$this->order->order_number}**.")
             ->line("**Refund amount:** $" . number_format($this->amount, 2))
             ->line("The refund has been processed to your original payment method and typically appears within 5–10 business days, depending on your bank.")
-            ->salutation("Thank you – Jubilee Nexus Group Team");
+            ->salutation("Thank you – Jubilee Direct Team");
     }
 }

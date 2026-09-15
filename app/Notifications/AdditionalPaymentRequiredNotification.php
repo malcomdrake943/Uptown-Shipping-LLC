@@ -38,6 +38,6 @@ class AdditionalPaymentRequiredNotification extends Notification implements Shou
             ->line("Please complete the additional payment to allow us to proceed with your order.")
             ->action('Pay Now – $' . number_format($this->amount, 2), $paymentUrl)
             ->line("You will not be charged without clicking the button above.")
-            ->salutation("Thank you – Jubilee Nexus Group Team");
+            ->salutation("Thank you – Jubilee Direct Team");
     }
 }

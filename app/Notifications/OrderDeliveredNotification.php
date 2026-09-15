@@ -26,6 +26,6 @@ class OrderDeliveredNotification extends Notification implements ShouldQueue
             ->greeting("Hello {$this->order->customer_name}!")
             ->line("Your order **{$this->order->order_number}** has been marked as delivered!")
             ->line("We hope you love your purchase. If you have any questions or concerns, please reply to this email.")
-            ->salutation("Thank you for choosing Jubilee Nexus Group!");
+            ->salutation("Thank you for choosing Jubilee Direct!");
     }
 }

@@ -51,8 +51,12 @@ class FeeRuleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('min_price')->money('usd')->sortable(),
-                Tables\Columns\TextColumn::make('max_price')->money('usd')->default('Unbounded'),
+                Tables\Columns\TextColumn::make('min_price')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '$0.00')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('max_price')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : 'Unbounded')
+                    ->default('Unbounded'),
                 Tables\Columns\BadgeColumn::make('fee_type')
                     ->colors(['primary' => 'percentage', 'success' => 'flat']),
                 Tables\Columns\TextColumn::make('fee_value')

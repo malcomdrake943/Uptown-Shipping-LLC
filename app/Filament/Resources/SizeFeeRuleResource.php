@@ -51,7 +51,8 @@ class SizeFeeRuleResource extends Resource
                         'warning' => 'large',
                         'danger'  => 'oversized',
                     ]),
-                Tables\Columns\TextColumn::make('flat_fee')->money('usd'),
+                Tables\Columns\TextColumn::make('flat_fee')
+                    ->formatStateUsing(fn ($state) => $state !== null ? '$' . number_format((float) $state, 2) : '$0.00'),
                 Tables\Columns\IconColumn::make('requires_manual_quote')->boolean(),
             ])
             ->actions([

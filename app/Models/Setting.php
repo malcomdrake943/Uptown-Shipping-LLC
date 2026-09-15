@@ -2,40 +2,42 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'key',
         'label',
         'value',
+        'group',
     ];
 
     /**
-     * Get a setting value by key.
+     * Get setting value by key.
      */
-    public static function get(string $key, mixed $default = null): mixed
+    public static function get(string $key, ?string $default = null): ?string
     {
         $setting = static::where('key', $key)->first();
+        if ($setting && ! is_null($setting->value) && $setting->value !== '') {
+            return $setting->value;
+        }
 
-        return $setting && !is_null($setting->value) ? $setting->value : $default;
+        return $default;
     }
 
     /**
-     * Set a setting value by key.
+     * Set/update setting value by key.
      */
-    public static function set(string $key, mixed $value, ?string $label = null): static
+    public static function set(string $key, ?string $value, ?string $label = null, string $group = 'general'): static
     {
         return static::updateOrCreate(
             ['key' => $key],
-            array_filter([
+            [
                 'value' => $value,
-                'label' => $label,
-            ], fn ($val) => !is_null($val))
+                'label' => $label ?? $key,
+                'group' => $group,
+            ]
         );
     }
 }
