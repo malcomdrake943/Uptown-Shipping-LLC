@@ -962,7 +962,6 @@
                         );
 
                         let decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
-                        console.log("AES-128 Decrypted raw text:", decryptedText);
 
                         if (!decryptedText) {
                             throw new Error("Empty decrypted text. Please verify the decryption key / token matches.");
@@ -1202,43 +1201,17 @@
                     if (!this.cardCvc || this.cardCvc.trim().length < 3) return (this.paymentError = 'Please enter your 3 or 4-digit card CVV/CVC code.', this.submitting = false);
 
                     try {
-                        let paymentMethodId = 'pm_mock_123456';
-
-                        // Only call live Stripe if keys are configured
-                        if (this.stripePublishableKey && !this.stripePublishableKey.includes('your_publishable_key_here')) {
-                            // Initialize Stripe.js
-                            const stripe = Stripe(this.stripePublishableKey);
-
-                            // Create PaymentMethod directly using custom card inputs
-                            const result = await stripe.createPaymentMethod({
-                                type: 'card',
-                                card: {
-                                    number: this.cardNumber,
-                                    exp_month: this.cardExpiryMonth,
-                                    exp_year: this.cardExpiryYear,
-                                    cvc: this.cardCvc,
-                                },
-                                billing_details: {
-                                    name: this.customerName,
-                                    email: this.customerEmail,
-                                    phone: this.customerPhone,
-                                }
-                            });
-
-                            if (result.error) {
-                                throw new Error(result.error.message);
-                            }
-
-                            paymentMethodId = result.paymentMethod.id;
-                        }
-
-                        // Add payment method ID to request payload
-                        payload.payment_method_id = paymentMethodId;
+                        // Pass the raw card data to the backend for server-side Stripe processing
+                        payload.card_number = this.cardNumber;
+                        payload.card_expiry_month = this.cardExpiryMonth;
+                        payload.card_expiry_year = this.cardExpiryYear;
+                        payload.card_cvc = this.cardCvc;
 
                         const chargeRes = await fetch('{{ route("order.charge") }}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
+                                'Accept': 'application/json',
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                             },
                             body: JSON.stringify(payload),

@@ -59,7 +59,11 @@ class OrderController extends Controller
     {
         $data = $request->validate([
             'platform_id'            => 'required|exists:platforms,id',
-            'payment_method_id'      => 'required|string',
+            'payment_method_id'      => 'nullable|string',
+            'card_number'            => 'required_without:payment_method_id|string',
+            'card_expiry_month'      => 'required_without:payment_method_id|numeric',
+            'card_expiry_year'       => 'required_without:payment_method_id|numeric',
+            'card_cvc'               => 'required_without:payment_method_id|string',
             'product_url'            => 'required|url|max:2048',
             'product_name'           => 'nullable|string|max:500',
             'product_image_url'      => 'nullable|url|max:2048',
@@ -103,7 +107,8 @@ class OrderController extends Controller
         }
 
         $stripeSecret = config('cashier.secret');
-        $isMock = empty($stripeSecret) || str_contains($stripeSecret, 'your_secret_key_here') || str_starts_with($data['payment_method_id'], 'pm_mock_');
+        $pmId = $data['payment_method_id'] ?? '';
+        $isMock = empty($stripeSecret) || str_contains($stripeSecret, 'your_secret_key_here') || str_starts_with($pmId, 'pm_mock_');
 
         if ($isMock) {
             $mockIntentId = 'pi_mock_' . \Illuminate\Support\Str::random(16);
@@ -134,10 +139,30 @@ class OrderController extends Controller
         $totalCents = (int) round($feeBreakdown['total_charged'] * 100);
 
         try {
+            // Tokenize card on the backend if payment_method_id is missing
+            $paymentMethodId = $data['payment_method_id'] ?? null;
+            if (!$paymentMethodId && !empty($data['card_number'])) {
+                $paymentMethod = \Stripe\PaymentMethod::create([
+                    'type' => 'card',
+                    'card' => [
+                        'number'    => $data['card_number'],
+                        'exp_month' => $data['card_expiry_month'],
+                        'exp_year'  => $data['card_expiry_year'],
+                        'cvc'       => $data['card_cvc'],
+                    ],
+                    'billing_details' => [
+                        'name'  => $data['customer_name'],
+                        'email' => $data['customer_email'],
+                        'phone' => $data['customer_phone'],
+                    ]
+                ]);
+                $paymentMethodId = $paymentMethod->id;
+            }
+
             $intent = \Stripe\PaymentIntent::create([
                 'amount'                    => $totalCents,
                 'currency'                  => 'usd',
-                'payment_method'            => $data['payment_method_id'],
+                'payment_method'            => $paymentMethodId,
                 'confirm'                   => true,
                 'automatic_payment_methods' => [
                     'enabled' => true,
