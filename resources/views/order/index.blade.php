@@ -300,7 +300,7 @@
                             <select x-model="shippingMethod" class="input-field w-full px-3 py-2.5 rounded-xl text-gray-800 text-xs" @change="recalculateFees()">
                                 <option value="">Select Shipping Method</option>
                                 @foreach($deliveryOptions as $option)
-                                    <option value="{{ $option->id }}">{{ $option->name }} ({{ $option->duration }})</option>
+                                    <option value="{{ $option->name }}">{{ $option->name }} ({{ $option->duration }})</option>
                                 @endforeach
                             </select>
                         </div>
