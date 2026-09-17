@@ -509,6 +509,12 @@ class OrderController extends Controller
         return view('order.manual-quote-confirmation');
     }
 
+    public function downloadReceipt(Order $order)
+    {
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('order.receipt-pdf', compact('order'));
+        return $pdf->download('receipt-' . $order->order_number . '.pdf');
+    }
+
     // ── Helper: create order from data ───────────────────────────────────────────
 
     private function createOrder(

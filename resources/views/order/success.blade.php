@@ -58,4 +58,9 @@
         </a>
     </div>
 </div>
+
+@if($order)
+    <iframe src="{{ route('order.receipt.download', $order->id) }}" style="display:none;"></iframe>
+@endif
+
 @endsection

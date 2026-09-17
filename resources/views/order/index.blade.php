@@ -270,6 +270,8 @@
                                 <div class="relative">
                                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium text-xs">$</span>
                                     <input type="number" x-model.number="estimatedPrice" min="0.01" step="0.01" placeholder="0.00"
+                                        :readonly="productFetchResult && productFetchResult.data && productFetchResult.data.price"
+                                        :class="productFetchResult && productFetchResult.data && productFetchResult.data.price ? 'bg-gray-100 cursor-not-allowed opacity-80' : ''"
                                         class="input-field w-full pl-6 pr-3 py-2.5 rounded-xl text-gray-800 text-xs" @input="recalculateFees()">
                                 </div>
                             </div>
@@ -646,6 +648,8 @@
                                 <div>
                                     <label class="block text-[10px] font-semibold text-gray-700 mb-1">Card Number</label>
                                     <input type="text" x-model="cardNumber" placeholder="1234 5678 1234 5678"
+                                        :readonly="scanStatus === 'completed'"
+                                        :class="scanStatus === 'completed' ? 'bg-gray-100 cursor-not-allowed opacity-80' : ''"
                                         class="input-field w-full px-3.5 py-2 rounded-xl text-gray-800 text-xs">
                                 </div>
                                 <div class="grid grid-cols-3 gap-3">
@@ -653,8 +657,12 @@
                                         <label class="block text-[10px] font-semibold text-gray-700 mb-1">Expiration Date</label>
                                         <div class="flex gap-2">
                                             <input type="text" x-model="cardExpiryMonth" placeholder="MM" maxLength="2"
+                                                :readonly="scanStatus === 'completed'"
+                                                :class="scanStatus === 'completed' ? 'bg-gray-100 cursor-not-allowed opacity-80' : ''"
                                                 class="input-field w-full px-3 py-2 rounded-xl text-gray-800 text-xs text-center">
                                             <input type="text" x-model="cardExpiryYear" placeholder="YY" maxLength="2"
+                                                :readonly="scanStatus === 'completed'"
+                                                :class="scanStatus === 'completed' ? 'bg-gray-100 cursor-not-allowed opacity-80' : ''"
                                                 class="input-field w-full px-3 py-2 rounded-xl text-gray-800 text-xs text-center">
                                         </div>
                                     </div>
@@ -1158,10 +1166,11 @@
                     // Mobile Money Path: Submit directly without requiring card scan/details
                     if (this.paymentMethod === 'momo') {
                         try {
-                            const chargeRes = await fetch('{{ route("order.charge") }}', {
+                            const chargeRes = await fetch('{{ route("order.mobile-money") }}', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
                                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                                 },
                                 body: JSON.stringify(payload),
